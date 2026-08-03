@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "build:schools": "node scripts/build-schools.mjs"
+    "build:schools": "node scripts/build-schools.mjs",
+    "verify:rls": "node --env-file=.env.local scripts/verify-rls.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.0",
