@@ -95,11 +95,25 @@ GitHub 저장소 **Settings → Secrets and variables → Actions**에 아래 �
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 
-4. **Settings → Environment variables**에 `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`를
-   등록합니다. **Production과 Preview 양쪽 모두** 필요합니다.
-5. 이후 `main`에 push할 때마다 자동 배포됩니다.
+4. 이후 `main`에 push할 때마다 자동 배포됩니다.
 
-> 환경변수는 빌드 시점에 코드로 들어갑니다. 값을 바꾼 뒤에는 반드시 재배포하세요.
+### 환경변수를 대시보드에 넣지 않는 이유
+
+Supabase 공개 설정은 `.env.production`에 담아 저장소에 커밋해 두었습니다.
+덕분에 배포 플랫폼 쪽에 아무 설정도 하지 않아도 빌드가 바르게 동작합니다.
+
+이 두 값은 비밀이 아닙니다.
+
+- `anon` 키는 **브라우저에 노출되도록 설계된 공개 키**입니다. Vite가 빌드 시점에
+  JS 번들 안으로 값을 박아넣기 때문에, 저장소에 두든 대시보드에 두든
+  **배포된 사이트의 소스를 보면 누구나 볼 수 있습니다.**
+- 실제 데이터 보호는 Postgres의 RLS 정책이 담당합니다. 키를 안다고 남의 기수방을
+  볼 수 있는 게 아닙니다 (`npm run verify:rls`로 확인 가능).
+
+> ⚠️ `service_role` / `sb_secret_` 키는 RLS를 전부 무시하므로 절대 커밋하면 안 됩니다.
+> 개발용 `.env.local`은 계속 `.gitignore` 대상입니다.
+
+값을 바꿀 때는 `.env.production`을 수정하고 push하면 자동으로 재배포됩니다.
 
 ---
 
